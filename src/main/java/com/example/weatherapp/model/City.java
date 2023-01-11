@@ -1,11 +1,14 @@
 package com.example.weatherapp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
 
@@ -14,15 +17,21 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @RequiredArgsConstructor
 public class City {
     @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+
     private String id;
     private String name;
     private double latitude;
     private double longitude;
 
-    @OneToOne(mappedBy = "city")
+    @OneToOne(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Weather weather;
 
 
@@ -39,4 +48,8 @@ public class City {
         return getClass().hashCode();
     }
 
+    public void setWeather(Weather weather){
+        this.weather = weather;
+        weather.setCity(this);
+    }
 }

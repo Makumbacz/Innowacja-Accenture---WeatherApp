@@ -1,7 +1,11 @@
 package com.example.weatherapp.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "saved_activities")
@@ -11,8 +15,9 @@ import lombok.*;
 @RequiredArgsConstructor
 public class SavedActivity {
     @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
-
     private String name;
     private ActivityType type;
     private String city;

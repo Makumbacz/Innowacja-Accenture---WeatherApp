@@ -1,10 +1,15 @@
 package com.example.weatherapp.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
 
@@ -16,9 +21,16 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class Activity {
     @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
     private String name;
     private ActivityType type;
+
+    public Activity(String name, ActivityType type) {
+        this.name = name;
+        this.type = type;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -31,11 +43,6 @@ public class Activity {
     @Override
     public int hashCode() {
         return getClass().hashCode();
-    }
-
-    public Activity(String name, ActivityType type) {
-        this.name = name;
-        this.type = type;
     }
 }
 
