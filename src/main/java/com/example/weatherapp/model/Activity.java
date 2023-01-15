@@ -1,17 +1,13 @@
 package com.example.weatherapp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Objects;
+import java.util.Map;
 
 @Entity
 @Table(name = "activities")
@@ -22,9 +18,19 @@ import java.util.Objects;
 public class Activity {
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private String id;
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private String name;
+    private String description;
+    @ElementCollection
+    Map<Integer, String> weatherTypes;
+    private double temperatureMin;
+    private double temperatureMax;
+    private double windSpeedMin;
+    private double windSpeedMax;
+    private double humidityMin;
+    private double humidityMax;
+    private double feelsLikeTemperatureMin;
+    private double feelsLikeTemperatureMax;
     private ActivityType type;
 
     public Activity(String name, ActivityType type) {
@@ -32,17 +38,19 @@ public class Activity {
         this.type = type;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Activity activity = (Activity) o;
-        return id != null && Objects.equals(id, activity.id);
-    }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public boolean isSuitable(Weather weather) {
+        if (this.weatherTypes.containsValue(weather.getDescription())) {
+            double temperature = weather.getTemperature();
+            double windSpeed = weather.getWindSpeed();
+            double humidity = weather.getHumidity();
+            double feelsLikeTemperature = weather.getFeelsLikeTemperature();
+            return this.temperatureMin <= temperature && temperature <= this.temperatureMax
+                    && this.windSpeedMin <= windSpeed && windSpeed <= this.windSpeedMax
+                    && this.humidityMin <= humidity && humidity <= this.humidityMax
+                    && this.feelsLikeTemperatureMin <= feelsLikeTemperature && feelsLikeTemperature <= this.feelsLikeTemperatureMax;
+        }
+        return false;
     }
 }
 

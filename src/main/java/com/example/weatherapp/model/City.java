@@ -24,7 +24,7 @@ import java.util.Objects;
 public class City {
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
 
     private String id;
     private String name;
@@ -33,6 +33,13 @@ public class City {
 
     @OneToOne(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Weather weather;
+
+    public City(String cityName, double latitude, double longitude, Weather weather) {
+        this.name = cityName;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.weather = weather;
+    }
 
 
     @Override
@@ -48,7 +55,7 @@ public class City {
         return getClass().hashCode();
     }
 
-    public void setWeather(Weather weather){
+    public void setWeather(Weather weather) {
         this.weather = weather;
         weather.setCity(this);
     }
