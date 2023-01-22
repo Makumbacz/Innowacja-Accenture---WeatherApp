@@ -22,6 +22,7 @@ public class Forecast {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
     @OneToMany(mappedBy = "forecast", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Weather> weathers;
 
 

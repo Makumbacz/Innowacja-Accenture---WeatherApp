@@ -14,10 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -28,13 +25,14 @@ import java.util.List;
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://127.0.0.1:5173")
 @RequestMapping("/api/v1/activity")
 public class ActivityController {
 
     private static final String API_KEY = "b07fa6c18655a358b7c1efd1e97a5386";
     private static final String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?appid=" + API_KEY + "&units=metric";
     private static final String FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast?appid=" + API_KEY + "&units=metric";
-    private final ForecastService forecastService;
+    private final WeatherService weatherService;
     private final ActivityService activityService;
 
 
@@ -45,22 +43,21 @@ public class ActivityController {
 
         String CITY = "&q="+city;
         ResponseEntity<String> response = restTemplate.exchange(
-                FORECAST_URL + CITY,
+                WEATHER_URL + CITY,
                 HttpMethod.GET,
                 null,
                 String.class);
         JSONObject json = new JSONObject(response.getBody());
         log.info(json.toString());
-        Forecast forecast = forecastService.getNewForecastForCity(json);
+        Weather weather = weatherService.getNewWeatherForCity(json);
         List<Activity> activities = activityService.getAllActivities();
         List<Activity> suitableActivities = new ArrayList<>();
-        for (Weather weather: forecast.getWeathers()) {
             for (Activity activity : activities) {
                 if (activity.isSuitable(weather)) {
                     suitableActivities.add(activity);
                 }
             }
-        }
+
         if(suitableActivities.isEmpty())
             return ResponseEntity.ok().body("Failed");
         return ResponseEntity.ok().body(suitableActivities);

@@ -33,11 +33,11 @@ public class Weather {
     private String description;
     private String dateTime;
     private int feelsLikeTemperature;
-    @OneToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private City city;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    //@JoinColumn(name="library_id")
     private Forecast forecast;
 
     public Weather(int temperature, int windSpeed, int humidity, String description, City city) {
@@ -51,7 +51,7 @@ public class Weather {
         this.setHumidity((int) ((JSONObject) jsonObject.get("main")).get("humidity"));
         this.setTemperature((int) Math.ceil( Double.parseDouble(((JSONObject) jsonObject.get("main")).get("temp").toString())));
         this.setDateTime(jsonObject.get("dt").toString());
-        this.setDescription(((JSONObject) ((JSONArray) jsonObject.get("weather")).get(0)).get("description").toString());
+        this.setDescription(((JSONObject) ((JSONArray) jsonObject.get("weather")).get(0)).get("main").toString().toUpperCase());
         this.setWindSpeed((int) Math.ceil( Double.parseDouble((((JSONObject) jsonObject.get("wind")).get("speed").toString()))));
         this.setFeelsLikeTemperature((int) Math.ceil( Double.parseDouble(((JSONObject) jsonObject.get("main")).get("feels_like").toString())));
         return this;

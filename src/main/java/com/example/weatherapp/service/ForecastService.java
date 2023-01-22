@@ -1,5 +1,6 @@
 package com.example.weatherapp.service;
 
+import com.example.weatherapp.dto.ForecastDto;
 import com.example.weatherapp.model.City;
 import com.example.weatherapp.model.Forecast;
 import com.example.weatherapp.model.Weather;
@@ -13,6 +14,10 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,5 +60,59 @@ public class ForecastService {
         forecast.setWeathers(weathers);
         forecastRepository.save(forecast);
         return forecast;
+    }
+
+    public List<ForecastDto> convertForecastToDtos(Forecast forecast){
+
+        List<ForecastDto> forecastDtos = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        int dayIncrement = 1;
+        Weather weather = forecast.getWeathers().get(0);
+        ForecastDto forecastDto = new ForecastDto();
+        forecastDto.setDate(today);
+        double totalWindSpeed = weather.getWindSpeed();
+        double totalHumidity = weather.getHumidity();
+
+        int count = 1;
+        for (Weather weatherFromForecast : forecast.getWeathers()) {
+
+            String timestamp = weatherFromForecast.getDateTime();
+            long timestampLong = Long.parseLong(timestamp);
+            Instant instant = Instant.ofEpochSecond(timestampLong);
+            LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+            LocalDate givenDate = dateTime.toLocalDate();
+
+            if(givenDate.isEqual(today.plusDays(dayIncrement))){
+                try {
+                    forecastDto.setHumidity(totalHumidity / count);
+                    forecastDto.setWindSpeed(totalWindSpeed / count);
+
+                } catch(NumberFormatException exception) {
+                   log.info("You can't divide by zero!");
+                }
+
+                forecastDtos.add(forecastDto);
+                forecastDto = new ForecastDto(-999,999,-999,-999,today.plusDays(dayIncrement ));
+                totalHumidity = 0;
+                totalWindSpeed = 0;
+                count = 0;
+                dayIncrement++;
+            }
+
+            if(weatherFromForecast.getTemperature() > forecastDto.getTodayTopTemperature()){
+                forecastDto.setTodayTopTemperature(weatherFromForecast.getTemperature());
+            }
+            if(weatherFromForecast.getTemperature() < forecastDto.getTodayLowestTemperature()){
+                forecastDto.setTodayLowestTemperature(weatherFromForecast.getTemperature());
+            }
+
+            totalWindSpeed += weatherFromForecast.getWindSpeed();
+            totalHumidity += weatherFromForecast.getHumidity();
+            count++;
+
+
+
+        }
+        return forecastDtos;
     }
 }

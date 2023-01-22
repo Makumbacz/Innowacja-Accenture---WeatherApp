@@ -10,6 +10,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -31,14 +32,14 @@ public class City {
     private double latitude;
     private double longitude;
 
-    @OneToOne(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Weather weather;
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Weather> weather;
 
-    public City(String cityName, double latitude, double longitude, Weather weather) {
+    public City(String cityName, double coordLat, double coordLon, List<Weather> weatherList) {
         this.name = cityName;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.weather = weather;
+        this.latitude = coordLat;
+        this.longitude = coordLon;
+        this.weather = weatherList;
     }
 
 
@@ -55,8 +56,5 @@ public class City {
         return getClass().hashCode();
     }
 
-    public void setWeather(Weather weather) {
-        this.weather = weather;
-        weather.setCity(this);
-    }
+
 }

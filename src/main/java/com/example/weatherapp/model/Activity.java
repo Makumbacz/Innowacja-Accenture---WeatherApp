@@ -19,10 +19,11 @@ public class Activity {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    private String Id;
     private String name;
     private String description;
     @ElementCollection
-    Map<Integer, String> weatherTypes;
+    Map<Integer, WeatherDescription> weatherTypes;
     private double temperatureMin;
     private double temperatureMax;
     private double windSpeedMin;
@@ -40,7 +41,8 @@ public class Activity {
 
 
     public boolean isSuitable(Weather weather) {
-        if (this.weatherTypes.containsValue(weather.getDescription())) {
+
+        if (this.weatherTypes.containsValue(WeatherDescription.valueOf(weather.getDescription()))) {
             double temperature = weather.getTemperature();
             double windSpeed = weather.getWindSpeed();
             double humidity = weather.getHumidity();
