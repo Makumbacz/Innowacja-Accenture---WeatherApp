@@ -46,7 +46,7 @@ public class WeatherDto {
 Dane pobrane z API pogodowego są modyfikowane i parsowane do określonego formatu przed wysłaniem do użytkownika.
 Tutaj nie zbyt ładne setowanie do klasy Weather.
 ```java 
- public v setWeatherFromJsonObject(JSONObject jsonObject) {
+ public Weather setWeatherFromJsonObject(JSONObject jsonObject) {
         this.setHumidity((int) ((JSONObject) jsonObject.get("main")).get("humidity"));
         this.setTemperature((int) Math.ceil( Double.parseDouble(((JSONObject) jsonObject.get("main")).get("temp").toString())));
         this.setDateTime(jsonObject.get("dt").toString());
