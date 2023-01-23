@@ -1,6 +1,5 @@
 # Innowacja_Accenture_WeatherApp
-Podstawowa applikacja webowa korzystająca z OpenWeatherApi. Pozwala użytkownikowi przeglądać aktualne i prognozowane informacje o pogodzie dla określonej lokalizacji oraz
-może zasugerować aktywności oparte na pogodzie w danej lokalizacji. 
+Podstawowa applikacja webowa korzystająca z OpenWeatherApi. Pozwala użytkownikowi przeglądać aktualne i prognozowane informacje o pogodzie dla określonej lokalizacji oraz może zasugerować aktywności oparte na pogodzie w danej lokalizacji. 
 Aplikacja wykorzystuje baze danych PostgreSQL, Spring Boot jako framework backendowy oraz vue.js jako framework frontendowy.
 
 Używane bilioteki:
@@ -56,13 +55,32 @@ Tutaj nie zbyt ładne setowanie do klasy Weather.
         return this;
     }
 ```
+
+## Odpalenie aplikacji
+### Backend
+
+1. Sklonuj repozytorium
+
+`git clone https://github.com/username/weather-app.git`
+
+2. Utwórz nową bazę danych w PostgreSQL i zaktualizuj właściwości aplikacji w `src/main/resources/application.properties` o odpowiedni adres URL bazy danych, nazwę użytkownika i hasło.
+3. Uruchom polecenie `mvn spring-boot:run`, aby uruchomić aplikację Spring Boot.
+
+### Frontend
+
+1. Przejdź do katalogu `frontend`
+2. Zainstaluj dependencje uruchamiając `npm install`.
+3. Uruchom serwer uruchamiając `npm run serve` lub `vite dev`.
+
+
+
 ## Część wizualna
 ![image](https://user-images.githubusercontent.com/86847471/213948275-b9faf5cd-d1a4-4ee7-828e-8b5433b8663c.png)
 ![image](https://user-images.githubusercontent.com/86847471/213948537-c2147a9e-96be-4b42-9c30-8254f3e1bf45.png)
 
 
 
-##Model bazy danych (Użytkownik będzie dodany w późniejszej eskalacji aplikacji)
+## Model bazy danych (Użytkownik będzie dodany w późniejszej eskalacji aplikacji)
 ![image](https://user-images.githubusercontent.com/86847471/213948067-9bbcfd14-79b5-4bc6-963b-0888f10cbfbf.png)
 
 * [Spring Boot](https://spring.io/projects/spring-boot)
