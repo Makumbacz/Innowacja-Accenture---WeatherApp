@@ -7,10 +7,13 @@ import com.example.weatherapp.service.ActivityService;
 import com.example.weatherapp.service.CityService;
 import com.example.weatherapp.service.ForecastService;
 import com.example.weatherapp.service.WeatherService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.HTTP;
 import org.json.JSONObject;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RestController
@@ -36,7 +40,10 @@ public class ActivityController {
     private final ActivityService activityService;
 
 
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Object>getSuggestionById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(activityService.getActivityById(id), HttpStatus.OK);
+    }
     @GetMapping("/suggestion")
     public ResponseEntity<Object> suggestActivity(@RequestParam String city) {
         RestTemplate restTemplate = new RestTemplate();

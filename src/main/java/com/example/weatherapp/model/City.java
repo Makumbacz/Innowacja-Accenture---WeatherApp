@@ -12,6 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "cities")
@@ -24,10 +25,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class City {
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String name;
     private double latitude;
     private double longitude;

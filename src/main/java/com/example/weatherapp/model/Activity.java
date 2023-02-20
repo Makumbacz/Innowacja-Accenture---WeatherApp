@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Entity
 @Table(name = "activities")
@@ -17,9 +18,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class Activity {
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    private String Id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String name;
     private String description;
     @ElementCollection

@@ -13,6 +13,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "weather")
 @Getter
@@ -24,9 +26,8 @@ import org.json.JSONObject;
 @RequiredArgsConstructor
 public class Weather {
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private int temperature;
     private int windSpeed;
     private int humidity;

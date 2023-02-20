@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "saved_activities")
 @Getter
@@ -15,9 +17,8 @@ import org.hibernate.annotations.GenericGenerator;
 @RequiredArgsConstructor
 public class SavedActivity {
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String name;
     private ActivityType type;
     private String city;

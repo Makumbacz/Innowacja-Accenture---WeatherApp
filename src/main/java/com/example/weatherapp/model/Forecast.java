@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Table(name = "forecast")
 @Getter
@@ -18,9 +19,8 @@ import java.util.Objects;
 @Entity
 public class Forecast {
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     @OneToMany(mappedBy = "forecast", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Weather> weathers;

@@ -1,12 +1,12 @@
 <template>
   <div>
     <h1>Current Weather for {{ city }}</h1>
+    <p>Date: {{ dateTime }}</p>
     <p>Temperature: {{ temperature }}</p>
+    <p>Feels Like Temperature: {{ feelsLikeTemperature }}</p>
     <p>Wind Speed: {{ windSpeed }}</p>
     <p>Humidity: {{ humidity }}</p>
     <p>Description: {{ description }}</p>
-    <p>Feels Like Temperature: {{ feelsLikeTemperature }}</p>
-    <p>Date: {{ dateTime }}</p>
   </div>
 </template>
 

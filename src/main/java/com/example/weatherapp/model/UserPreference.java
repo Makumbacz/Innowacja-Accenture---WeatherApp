@@ -9,6 +9,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user_preferences")
@@ -18,9 +19,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserPreference {
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private ActivityType type;
     @ManyToOne
     @JoinColumn(name = "user_id")

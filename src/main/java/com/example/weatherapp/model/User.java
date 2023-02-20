@@ -9,6 +9,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
+import java.util.UUID;
 
 
 @Entity
@@ -19,9 +20,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String email;
     private String password;
 
