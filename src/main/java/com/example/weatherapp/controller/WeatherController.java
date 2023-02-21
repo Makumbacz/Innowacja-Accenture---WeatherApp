@@ -21,11 +21,10 @@ import org.springframework.web.client.RestTemplate;
 @Transactional
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/weather")
-@CrossOrigin(origins = "http://127.0.0.1:5173")
 
 public class WeatherController {
 
-    private static final String API_KEY = "b07fa6c18655a358b7c1efd1e97a5386";
+    private static final String API_KEY = "47cb2bfedd608e78977de1c27689d50e";
     private static final String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?appid=" + API_KEY + "&units=metric";
     private static final String FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast?appid=" + API_KEY + "&units=metric";
     private static String CITY = "&q=warsaw";

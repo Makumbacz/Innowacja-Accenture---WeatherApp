@@ -1,60 +1,87 @@
 <template>
-  <div>
-    <h1>Current Weather for {{ city }}</h1>
-    <p>Date: {{ dateTime }}</p>
-    <p>Temperature: {{ temperature }}</p>
-    <p>Feels Like Temperature: {{ feelsLikeTemperature }}</p>
-    <p>Wind Speed: {{ windSpeed }}</p>
-    <p>Humidity: {{ humidity }}</p>
-    <p>Description: {{ description }}</p>
+  <div class="flex justify-center items-center">
+    <div class="bg-white shadow-md rounded p-6">
+      <h1 class="text-3xl font-bold mb-6">Current Weather for {{ city }}</h1>
+      <div class="flex flex-col md:flex-row">
+        <div class="w-full md:w-1/2">
+          <div class="flex flex-col mb-4">
+            <span class="text-lg font-bold mb-1">Date:</span>
+            <span class="text-gray-800">{{ dateTime }}</span>
+          </div>
+          <div class="flex flex-col mb-4">
+            <span class="text-lg font-bold mb-1">Temperature:</span>
+            <span class="text-gray-800">{{ temperature }}</span>
+          </div>
+          <div class="flex flex-col mb-4">
+            <span class="text-lg font-bold mb-1">Feels Like Temperature:</span>
+            <span class="text-gray-800">{{ feelsLikeTemperature }}</span>
+          </div>
+        </div>
+        <div class="w-full md:w-1/2">
+          <div class="flex flex-col mb-4">
+            <span class="text-lg font-bold mb-1">Wind Speed:</span>
+            <span class="text-gray-800">{{ windSpeed }}</span>
+          </div>
+          <div class="flex flex-col mb-4">
+            <span class="text-lg font-bold mb-1">Humidity:</span>
+            <span class="text-gray-800">{{ humidity }}</span>
+          </div>
+          <div class="flex flex-col mb-4">
+            <span class="text-lg font-bold mb-1">Description:</span>
+            <span class="text-gray-800">{{ description }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from 'axios';
+import { useAuthStore } from "../stores/auth";
+import { onMounted, ref } from 'vue';
 
-export default {
-  name: 'CurrentWeather',
-  data() {
-    return {
-      city: '',
-      temperature: '',
-      windSpeed: '',
-      humidity: '',
-      description: '',
-      feelsLikeTemperature: '',
-      dateTime: ''
-    }
-  },
-  created() {
-    this.getLocation();
-  },
-  methods: {
-    async getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.getWeatherData);
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-      }
-    },
-    async getWeatherData(position) {
-      console.log(position);
-      try {
-        const response = await axios.get(`http://localhost:8080/api/v1/weather/current/cords?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`);
-        this.temperature = response.data.temperature;
-        this.windSpeed = response.data.windSpeed;
-        this.humidity = response.data.humidity;
-        this.description = response.data.description;
-        this.feelsLikeTemperature = response.data.feelsLikeTemperature;
-        this.dateTime = response.data.dateTime;
-        this.city = response.data.city;
-      } catch (error) {
-        console.error(error);
-      }
-    }
+const store = useAuthStore();
+const city = ref('');
+const temperature = ref('');
+const windSpeed = ref('');
+const humidity = ref('');
+const description = ref('');
+const feelsLikeTemperature = ref('');
+const dateTime = ref('');
+
+onMounted(() => {
+  getLocation();
+});
+
+async function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(getWeatherData);
+  } else {
+    console.error("Geolocation is not supported by this browser.");
+  }
+}
+
+async function getWeatherData(position) {
+  console.log(position);
+  try {
+    const config = {
+      headers: { Authorization: `Bearer ${store.token}` }
+    };
+    const response = await axios.get(`http://localhost:8080/api/v1/weather/current/cords?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`, config);
+    temperature.value = response.data.temperature;
+    windSpeed.value = response.data.windSpeed;
+    humidity.value = response.data.humidity;
+    description.value = response.data.description;
+    feelsLikeTemperature.value = response.data.feelsLikeTemperature;
+    dateTime.value = response.data.dateTime;
+    city.value = response.data.city;
+  } catch (error) {
+    console.error(error);
   }
 }
 </script>
+
 
 <style scoped>
 

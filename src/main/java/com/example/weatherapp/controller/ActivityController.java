@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +30,10 @@ import java.util.UUID;
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://127.0.0.1:5173")
 @RequestMapping("/api/v1/activity")
 public class ActivityController {
 
-    private static final String API_KEY = "b07fa6c18655a358b7c1efd1e97a5386";
+    private static final String API_KEY = "47cb2bfedd608e78977de1c27689d50e";
     private static final String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?appid=" + API_KEY + "&units=metric";
     private static final String FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast?appid=" + API_KEY + "&units=metric";
     private final WeatherService weatherService;
@@ -44,6 +44,13 @@ public class ActivityController {
     public ResponseEntity<Object>getSuggestionById(@PathVariable("id") Long id){
         return new ResponseEntity<>(activityService.getActivityById(id), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAuthority('SCOPE_READ')")
+    @GetMapping("/admin")
+    public String admin(){
+        return "Hello Admin!";
+    }
+
     @GetMapping("/suggestion")
     public ResponseEntity<Object> suggestActivity(@RequestParam String city) {
         RestTemplate restTemplate = new RestTemplate();

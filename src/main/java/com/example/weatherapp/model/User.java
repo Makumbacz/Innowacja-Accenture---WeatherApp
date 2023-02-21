@@ -1,10 +1,7 @@
 package com.example.weatherapp.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -18,17 +15,15 @@ import java.util.UUID;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String email;
+    private String username;
     private String password;
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
     @Override
     public boolean equals(Object o) {
