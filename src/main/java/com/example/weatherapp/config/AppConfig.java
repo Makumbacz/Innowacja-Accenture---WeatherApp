@@ -1,25 +1,47 @@
 package com.example.weatherapp.config;
 
-import com.example.weatherapp.model.Activity;
-import com.example.weatherapp.model.ActivityType;
-import com.example.weatherapp.model.WeatherDescription;
+import com.example.weatherapp.model.*;
 import com.example.weatherapp.repository.ActivityRepository;
+import com.example.weatherapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
-@RequiredArgsConstructor
 public class AppConfig {
-
     @Bean
-    CommandLineRunner run(ActivityRepository activityRepository) {
+    CommandLineRunner run(ActivityRepository activityRepository, UserService userService, PasswordEncoder passwordEncoder) {
 
         return args -> {
+
+            ArrayList<Role> roles = new ArrayList<>();
+            roles.add(userService.createRoleIfNotFound("READ"));
+            roles.add(userService.createRoleIfNotFound("WRITE"));
+            roles.add(userService.createRoleIfNotFound("DELETE"));
+
+            User user = new User();
+            user.setUsername("Admin");
+            user.setEmail("admin@gmail.com");
+            user.setPassword("Admin");
+            user.setAuthorities(List.of(roles.get(0),roles.get(1),roles.get(2)));
+            userService.addNewUser(user);
+
+            user = new User();
+            user.setUsername("Arek123");
+            user.setEmail("awietess@gmail.com");
+            user.setPassword("Arek123");
+            user.setAuthorities(List.of(roles.get(0)));
+            userService.addNewUser(user);
+
             Activity hiking = new Activity();
             hiking.setName("Hiking");
             hiking.setDescription("Explore nature and enjoy the beautiful scenery");

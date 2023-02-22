@@ -20,6 +20,8 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -52,19 +54,20 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService){
         var authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(encoder());
         return new ProviderManager(authProvider);
     }
 
 
-    @Bean
+ /*   @Bean
     public UserDetailsService user(){
         return new InMemoryUserDetailsManager(
-                User.withUsername("aras")
-                        .password("{noop}password")
-                        .authorities("READ","ROLE_USER","ROLE_ADMIN")
+                User.withUsername("Admin")
+                        .password("{noop}admin")
+                        .authorities("READ","WRITE","DELETE")
                         .build()
         );
-    }
+    }*/
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
@@ -74,7 +77,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests( auth-> auth
                                 .requestMatchers("/api/v1/auth/token").permitAll()
-
                                 .anyRequest().authenticated()
                         )
 
@@ -103,5 +105,10 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
         return source;
+    }
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 }
