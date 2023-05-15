@@ -1,34 +1,34 @@
 <template>
   <div class="flex justify-center items-center">
-    <div class="bg-white shadow-md rounded p-6">
+    <div class="bg-white shadow-md rounded p-8">
       <h1 class="text-3xl font-bold mb-6">Current Weather for {{ city }}</h1>
       <div class="flex flex-col md:flex-row">
         <div class="w-full md:w-1/2">
           <div class="flex flex-col mb-4">
-            <span class="text-lg font-bold mb-1">Date:</span>
-            <span class="text-gray-800">{{ dateTime }}</span>
+            <span class="text-lg font-bold mb-1">Date</span>
+            <span class="text-gray-800 font-semibold">{{ dateTime }}</span>
           </div>
           <div class="flex flex-col mb-4">
-            <span class="text-lg font-bold mb-1">Temperature:</span>
-            <span class="text-gray-800">{{ temperature }}</span>
+            <span class="text-lg font-bold mb-1">Temperature </span>
+            <span class="text-gray-800 font-semibold">{{ temperature }} °C</span>
           </div>
           <div class="flex flex-col mb-4">
-            <span class="text-lg font-bold mb-1">Feels Like Temperature:</span>
-            <span class="text-gray-800">{{ feelsLikeTemperature }}</span>
+            <span class="text-lg font-bold mb-1">Feels Like Temperature </span>
+            <span class="text-gray-800 font-semibold">{{ feelsLikeTemperature }} °C</span>
           </div>
         </div>
         <div class="w-full md:w-1/2">
           <div class="flex flex-col mb-4">
-            <span class="text-lg font-bold mb-1">Wind Speed:</span>
-            <span class="text-gray-800">{{ windSpeed }}</span>
+            <span class="text-lg font-bold mb-1">Wind Speed</span>
+            <span class="text-gray-800 font-semibold">{{ windSpeed }}  m/s</span>
           </div>
           <div class="flex flex-col mb-4">
-            <span class="text-lg font-bold mb-1">Humidity:</span>
-            <span class="text-gray-800">{{ humidity }}</span>
+            <span class="text-lg font-bold mb-1">Humidity </span>
+            <span class="text-gray-800 font-semibold">{{ humidity }} %</span>
           </div>
           <div class="flex flex-col mb-4">
-            <span class="text-lg font-bold mb-1">Description:</span>
-            <span class="text-gray-800">{{ description }}</span>
+            <span class="text-lg font-bold mb-1">Description</span>
+            <span class="text-gray-800 font-semibold">{{ description }}</span>
           </div>
         </div>
       </div>

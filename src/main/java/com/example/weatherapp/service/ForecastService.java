@@ -70,6 +70,8 @@ public class ForecastService {
         Weather weather = forecast.getWeathers().get(0);
         ForecastDto forecastDto = new ForecastDto();
         forecastDto.setDate(today);
+        forecastDto.setDescription(weather.getDescription());
+
         double totalWindSpeed = weather.getWindSpeed();
         double totalHumidity = weather.getHumidity();
 
@@ -86,17 +88,18 @@ public class ForecastService {
                 try {
                     forecastDto.setHumidity(totalHumidity / count);
                     forecastDto.setWindSpeed(totalWindSpeed / count);
-
                 } catch(NumberFormatException exception) {
                    log.info("You can't divide by zero!");
                 }
 
                 forecastDtos.add(forecastDto);
-                forecastDto = new ForecastDto(-999,999,-999,-999,today.plusDays(dayIncrement ));
+                forecastDto = new ForecastDto(-999,999,-999,-999,today.plusDays(dayIncrement),"");
                 totalHumidity = 0;
                 totalWindSpeed = 0;
                 count = 0;
                 dayIncrement++;
+                forecastDto.setDescription(weatherFromForecast.getDescription());
+
             }
 
             if(weatherFromForecast.getTemperature() > forecastDto.getTodayTopTemperature()){

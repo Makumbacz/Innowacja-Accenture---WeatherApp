@@ -18,6 +18,7 @@ public class ForecastDto {
     private double windSpeed;
     private double humidity;
     private LocalDate date;
+    private String description;
 
 
 

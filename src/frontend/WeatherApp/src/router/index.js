@@ -9,6 +9,7 @@ const routes = [
     { path: '/login', name:'Login', component: () => import("@/views/LoginView.vue")},
     { path: '/activities', name:'Activities', component: () => import("@/components/Activities.vue")},
     { path: '/forecast', name:'Forecast', component: () => import("@/components/Forecast.vue")},
+    { path: '/register', name:'Registration', component: () => import("@/views/RegisterView.vue")},
 
 ]
 
@@ -22,7 +23,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async  (to) =>{
-    const publicPages = ['/login']
+    const publicPages = ['/login', '/register']
     const authRequired = !publicPages.includes(to.path)
     const auth = useAuthStore()
 

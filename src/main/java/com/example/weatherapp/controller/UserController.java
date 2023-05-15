@@ -34,19 +34,16 @@ public class UserController {
         String email = request.getEmail();
         String password = request.getPassword();
 
-        // Validate request fields
         if (username == null || username.isEmpty() ||
                 email == null || email.isEmpty() ||
                 password == null || password.isEmpty()) {
             return ResponseEntity.badRequest().body("Invalid request body");
         }
 
-        // Check if user with same email already exists in the database
         if (userRepository.findByUsername(username).isPresent()) {
             return ResponseEntity.badRequest().body("User with same email already exists");
         }
 
-        // Create new user object with the request fields
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
