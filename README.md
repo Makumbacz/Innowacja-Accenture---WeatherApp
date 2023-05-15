@@ -75,9 +75,6 @@ Tutaj nie zbyt ładne setowanie do klasy Weather.
 
 
 ## Część wizualna
-![image](https://user-images.githubusercontent.com/86847471/213948275-b9faf5cd-d1a4-4ee7-828e-8b5433b8663c.png)
-![image](https://user-images.githubusercontent.com/86847471/213948537-c2147a9e-96be-4b42-9c30-8254f3e1bf45.png)
-
 
 
 ## Model bazy danych (Użytkownik będzie dodany w późniejszej eskalacji aplikacji)
